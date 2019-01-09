@@ -1,0 +1,2 @@
+#formats the git log output
+git config --global alias.log "log --pretty=format:'%h - %an, %ar : %s'"
