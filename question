@@ -1,0 +1,10 @@
+Securing API with JWT
+
+I understand the concept of JWT(Json Web Token) and how it works for REST APIs.
+
+The thing is, in order to get the token, a user needs to authenticate(user and password), right?
+
+How is that authentication secured and verified?
+I know securing the channel(using HTTPS) is the first thing, but, if the following communications needs to be secured, authorized and authenticated; How is it possible the authentication part is not strongly secured?
+
+Am I missing anything? Or is there anything else to secure the authentication step?
