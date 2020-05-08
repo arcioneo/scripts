@@ -1,0 +1,38 @@
+show dbs
+db.createCollection("policies", { capped : true, size : 5242880, max : 5000 } )
+db.policies.find()
+
+db.policies.insertMany([
+{ namespace: "namespace1", serviceName: "servicename1", version: 0 },
+{ namespace: "namespace1", serviceName: "servicename1", version: 1 },
+{ namespace: "namespace1", serviceName: "servicename1", version: 2 },
+{ namespace: "namespace1", serviceName: "servicename1", version: 3 },
+{ namespace: "space-x", serviceName: "tesla", version: 1 },
+{ namespace: "space-x", serviceName: "paypal", version: 1 },
+{ namespace: "space-x", serviceName: "secret-project", version: 1 },
+{ namespace: "space-x", serviceName: "secret-project", version: 2 },
+{ namespace: "space-x", serviceName: "secret-project", version: 3 }
+]);
+
+
+db.policies.group({key: {namespace: 1, serviceName: 1, count: 1}, reduce: function (curr, result) { }, initial: { count: 1 } } )
+
+{
+  _id: "$namespace",
+  serviceNames: {$push: "$serviceName"}
+}
+
+
+db.policies.aggregate( [ { $group : { _id: "$namespace", serviceNames: {$push: "$serviceName"}, numElement : { $sum : 1 } } } ] )
+
+
+
+db = connect("mongodb://spm-user:spm123@10.157.148.91:27017/spm-admin?authSource=spm-admin&readPreference=primary")
+
+
+
+***untested*****
+
+
+db.policies.group({key: {_id: {namespace : "$namespace", serviceName : "$serviceName" } , count: { $sum : 1 } }, reduce: function (curr, result) { }, initial: { count: 1 } } )
+
