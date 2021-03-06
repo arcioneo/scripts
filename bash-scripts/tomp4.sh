@@ -9,7 +9,7 @@ EOF
 
  convertToMp4() {
  	filename=$1
-	newFileName="${filename/webm/mp4}"
+	newFileName="${filename/.webm/.mp4}"
 	echo "converting file $filename"
 	ffmpeg -hide_banner -loglevel error -i $filename -c:v libx264 -c:a aac -strict experimental -b:a 192k $newFileName
 }
@@ -33,8 +33,6 @@ while (( "$#" )); do
 	esac
 done
 
-clear
-
 if [[ -d $FOLDER ]]; then
 	if [[ "$FOLDER" == *"/" ]]; then
 		FOLDER=${FOLDER%?}
@@ -46,7 +44,7 @@ if [[ -d $FOLDER ]]; then
 elif [[ -f $FOLDER ]]; then
 	convertToMp4 "${FOLDER}"
 else
-    echo "$FOLDER is not valid"
+    echo "Folder/file [$FOLDER] is not valid"
     exit 1
 fi
 
