@@ -10,7 +10,6 @@ Usage: Renames files inside a folder.
 	[ -r | --replace  <value> ]
 	[ -w | --with  <value> ]
 	[ -h | --help]
-
 EOF
 }
 
@@ -76,10 +75,10 @@ fi
 
 for filename in "$FOLDER"/*; do
 
-	fullFileName=${filename##*/}
-	path=${filename%/*}
-	filenameNoExtension=${fullFileName%.*}
-	extension=${filename#*.}
+	fullFileName="${filename##*/}"
+	path="${filename%/*}"
+	filenameNoExtension="${fullFileName%.*}"
+	extension="${filename##*.}"
     
 	if [ $TRIM = 1 ]; then
 		filenameNoExtension=$(echo "$filenameNoExtension" | xargs)
