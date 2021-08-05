@@ -19,15 +19,15 @@ echo "generating JKS file"
 base64 --decode ${base64File} > ${outJks}
 
 echo "Exporting .der file"
-keytool -export -alias client-access -file ${sampleDer} -keystore ${outJks}
+keytool -storepass password -export -alias client-access -file ${sampleDer} -keystore ${outJks}
 
 echo "Converting .der file to unencrypted PEM (crt file)"
 openssl x509 -inform der -in ${sampleDer} -out ${sampleCert}
 
 echo "Exporting .p12 file"
-keytool -importkeystore -srckeystore ${outJks} -destkeystore ${keystoreP12} -deststoretype PKCS12
+keytool -storepass password -importkeystore -srcstorepass password -srckeystore ${outJks} -destkeystore ${keystoreP12} -deststoretype PKCS12
 
 echo "Converting .p12 file to unencrypted PEM (key file)"
-winpty openssl pkcs12 -in ${keystoreP12} -nodes -nocerts -out ${serverKey}
+winpty openssl pkcs12 -in ${keystoreP12} -nodes -nocerts -out ${serverKey} -password pass:password
 
 echo "done :)"
