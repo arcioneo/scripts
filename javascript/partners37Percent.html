@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Selection</title>
+
+    <script>
+
+    function clearResults() {
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `
+            <h2>Results</h2>
+            <table id="resultsTable" border="1">
+                <tr>
+                    <th>#</th>
+                    <th>LIST OF PARTNERS</th>
+                    <th>SELECTED PARTNER</th>
+                    <th>BEST POSSIBLE PARTNER</th>
+                </tr>
+            </table>
+        `;
+    }
+
+        function invokeProcessPartners() {
+            clearResults();
+            const numIterations = parseInt(document.getElementById('numIterations').value);
+            const numPartners = parseInt(document.getElementById('numPartners').value);
+
+            if (isNaN(numPartners) || numPartners <= 0) {
+                alert("Please enter a valid positive integer for the number of partners.");
+                return;
+            }
+
+            if (isNaN(numIterations) || numIterations <= 0) {
+                alert("Please enter a valid positive integer for the number of iterations.");
+                return;
+            }
+
+            const resultsTable = document.getElementById('resultsTable');
+
+            let index = 1;
+            for (let i = 0; i < numIterations; i++) {
+                // Create an array of random float numbers
+                const partnersArray = Array.from({ length: numPartners }, () => (Math.random() * 9 + 1).toFixed(2));
+                const bestRankedPartner = Math.max(...partnersArray);
+
+                // Calculate the 37% index and split the array
+                const splitIndex = Math.ceil(0.37 * numPartners);
+                const firstArray = partnersArray.slice(0, splitIndex);
+                const secondArray = partnersArray.slice(splitIndex);
+
+                // Find the greatest value in the first array
+                const bestIn37Percentile = Math.max(...firstArray);
+
+                // Find the first value in the second array that is equal or greater than bestIn37Percentile
+                const selectedPartner = secondArray.find(value => parseFloat(value) >= bestIn37Percentile);
+                const finalSelectedPartner = selectedPartner !== undefined ? selectedPartner : "Not found better after 37%";
+
+                const row = resultsTable.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const cell4 = row.insertCell(3);
+
+                cell1.textContent = index++;
+                cell2.textContent = partnersArray.join(" , ");
+                cell3.textContent = finalSelectedPartner;
+                cell4.textContent = bestRankedPartner;
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <header></header>
+    <h1>What is this about?</h1>
+    </header>
+    <section></section>
+    <h2>Understanding the 37% Theory</h2>
+    <p>
+        The "37% theory" in finding a partner, also known as the "optimal stopping theory," suggests that to maximize
+        your chances of selecting the best potential partner, you should date and evaluate roughly the first 37% of
+        people you meet before settling down with the next person who is better than anyone you've dated so far;
+        essentially, spend a period exploring options before committing to the first person who surpasses your initial
+        sample group.
+    </p>
+    </section>
+
+    <form id="partnerForm">
+        <label for="numPartners">Number of Partners:</label>
+        <input type="number" id="numPartners" name="numPartners" min="1" required value="10">
+        <p />
+        <label for="numPartners">Number of Iterations:</label>
+        <input type="number" id="numIterations" name="numIterations" min="1" required value="3">
+        <p />
+        <button type="button" onclick="invokeProcessPartners()">Run Simulation</button>
+    </form>
+    <div id="results">
+        <h2>Results</h2>
+        <table id="resultsTable" border="1">
+            <tr>
+                <th>#</th>
+                <th>LIST OF PARTNERS</th>
+                <th>SELECTED PARTNER</th>
+                <th>BETST POSSIBLE PARTNER</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
