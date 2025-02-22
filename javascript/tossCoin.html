@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Toss</title>
+    <script>
+        function tossCoin() {
+            let numToss = document.getElementById('numToss').value;
+            let heads = 0;
+            let tails = 0;
+
+            if (numToss <= 0) {
+                alert('Please enter a number greater than zero.');
+                return;
+            }
+
+            for (let i = 0; i < numToss; i++) {
+                let result = Math.floor(Math.random() * 2);
+                if (result === 0) {
+                    heads++;
+                } else {
+                    tails++;
+                }
+            }
+            
+            let total = heads + tails;
+            let headsPercentage = (heads / total) * 100;
+            let tailsPercentage = (tails / total) * 100;
+
+            document.getElementById('headsPercentage').innerText = `Heads: ${headsPercentage.toFixed(2)}%`;
+            document.getElementById('tailsPercentage').innerText = `Tails: ${tailsPercentage.toFixed(2)}%`;
+        }
+    </script>
+</head>
+<body>
+    <h1>Tossing a coin</h1>
+    <p/>
+    <p>Statistics say that odds are 50%, you can test that out by tossing a coin N times and see how close to 50% that is.</p>
+    <p/>
+    <label for="numToss">Toss N times:</label>
+    <input type="number" id="numToss" name="numToss" min="1" value="1" required>
+    <button onclick="tossCoin()">Start</button>
+    <p/>
+    <p id="headsPercentage"></p>
+    <p id="tailsPercentage"></p>
+
+</body>
+</html>
